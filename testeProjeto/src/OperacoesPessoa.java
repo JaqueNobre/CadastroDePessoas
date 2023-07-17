@@ -5,4 +5,6 @@ public interface OperacoesPessoa {
     void atualizarPessoa(Pessoa pessoa);
     List<Pessoa> listarPessoas();
     void deletarPessoa(int id);
+
+
 }

@@ -9,7 +9,7 @@ public class Main {
     }
 
     private static void exibirMenu() {
-        String[] opcoes = {"Criar Pessoa Física", "Criar Pessoa Jurídica", "Listar Pessoas", "Deletar Pessoa", "Sair"};
+        String[] opcoes = {"Criar Pessoa Física", "Criar Pessoa Jurídica", "Listar Pessoas", "Deletar Pessoa","Atualizar Pessoa", "Sair"};
         while (true) {
             String escolha = (String) JOptionPane.showInputDialog(null, "Selecione uma opção:", "Menu", JOptionPane.PLAIN_MESSAGE, null, opcoes, opcoes[0]);
             if (escolha == null) {
@@ -30,10 +30,41 @@ public class Main {
                 case "Deletar Pessoa":
                     deletarPessoa();
                     break;
+                case "Atualizar Pessoa":
+                    atualizarPessoa();
+                    break;
                 case "Sair":
                     encerrarPrograma();
                     break;
             }
+        }
+    }
+
+    private static void atualizarPessoa() {
+        int id = Integer.parseInt(JOptionPane.showInputDialog("Digite o ID da pessoa a ser atualizada:"));
+        Pessoa pessoa = null;
+
+        // Verifica se a pessoa existe antes de atualizá-la
+        for (Pessoa p : pessoaDAO.listarPessoas()) {
+            if (p.getId() == id) {
+                pessoa = p;
+                break;
+            }
+        }
+
+        if (pessoa != null) {
+            String nome = JOptionPane.showInputDialog("Digite o novo nome da pessoa:");
+            String endereco = JOptionPane.showInputDialog("Digite o novo endereço da pessoa:");
+            String telefone = JOptionPane.showInputDialog("Digite o novo telefone da pessoa:");
+
+            pessoa.setNome(nome);
+            pessoa.setEndereco(endereco);
+            pessoa.setTelefone(telefone);
+
+            pessoaDAO.atualizarPessoa(pessoa);
+            JOptionPane.showMessageDialog(null, "Pessoa atualizada com sucesso.", "Informação", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Pessoa não encontrada.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 
